@@ -1,6 +1,6 @@
 import 'dart:math';
+import 'dart:io';
 
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:maxtrackr_flutter/pages/home_page.dart';
 import 'package:provider/provider.dart';
@@ -36,12 +36,37 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-  var favorites = <WordPair>{};
+  var favorites = <String>{};
   var selectedPageIndex = 0;
+  var current = "";
+  // Replace 'your_file.txt' with the path to your .txt file
+  String filePath = 'lib/resources/dictonary.txt';
+
+  // Process.run("echo", ['-e', "\$PWD"]);
+  @override
+  void initState() {
+    try {
+      File file = File(filePath);
+      List<String> lines = file.readAsLinesSync();
+
+      // Define the regex pattern
+      RegExp regex = RegExp(r'^[A][A-Z0-9\. -]+$');
+
+      // Iterate through each line and print lines that match the regex
+      // for (String line in lines) {
+      //   if (regex.hasMatch(line)) {
+      //     print(line);
+      //      break; // to stop at that word
+      //   }
+      // }
+    } catch (e) {
+      print("Error reading the file: $e");
+    }
+  }
 
   void getNext() {
-    current = WordPair.random();
+    current = allWords.first;
+
     notifyListeners();
   }
 
@@ -58,32 +83,5 @@ class MyAppState extends ChangeNotifier {
 
   bool isInFavourites() {
     return favorites.contains(current);
-  }
-}
-
-class FavouritesPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    if (appState.favorites.isEmpty) {
-      return Center(
-        child: Text("No favourite words as of yet"),
-      );
-    }
-
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text("You have ${appState.favorites.length} favourites"),
-        ),
-        for (var word in appState.favorites)
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text(word.asLowerCase),
-          ),
-      ],
-    );
   }
 }
