@@ -1,5 +1,5 @@
-import 'dart:math';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:maxtrackr_flutter/pages/home_page.dart';
@@ -37,40 +37,11 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var favorites = <String>{};
+  var words = <String>{};
   var selectedPageIndex = 0;
-  var current = "";
-  // Replace 'your_file.txt' with the path to your .txt file
-  String filePath = 'lib/resources/dictonary.txt';
+  var currentWord = "Click 'Next'";
 
-  // Process.run("echo", ['-e', "\$PWD"]);
-  @override
-  void initState() {
-    try {
-      File file = File(filePath);
-      List<String> lines = file.readAsLinesSync();
-
-      // Define the regex pattern
-      RegExp regex = RegExp(r'^[A][A-Z0-9\. -]+$');
-
-      // Iterate through each line and print lines that match the regex
-      // for (String line in lines) {
-      //   if (regex.hasMatch(line)) {
-      //     print(line);
-      //      break; // to stop at that word
-      //   }
-      // }
-    } catch (e) {
-      print("Error reading the file: $e");
-    }
-  }
-
-  void getNext() {
-    current = allWords.first;
-
-    notifyListeners();
-  }
-
-  void toggleFavorite() {
+  void toggleFavorite(String current) {
     if (favorites.contains(current)) {
       favorites.remove(current);
     } else {
@@ -81,7 +52,49 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isInFavourites() {
+  bool isInFavourites(String current) {
     return favorites.contains(current);
+  }
+
+  void getNext() {
+    if (words.isEmpty) {
+      var gen = generate();
+      currentWord = "loading swag...";
+      notifyListeners();
+      gen.whenComplete(() => getNextWordFromSet());
+      return;
+    } else {
+      getNextWordFromSet();
+    }
+  }
+
+  void getNextWordFromSet() {
+    print(words.first);
+    currentWord = words.first;
+    words.remove(currentWord);
+    notifyListeners();
+  }
+
+  Future<void> generate() async {
+    try {
+      if (words.isNotEmpty) return;
+
+      File file = File('lib/resources/dictonary.txt');
+      List<String> lines = await file.readAsLines();
+      // Define the regex pattern
+      RegExp regex = RegExp(r'^[A-Z][A-Z0-9\. -]*$');
+
+      // Iterate through each line and print lines that match the regex
+      for (String line in lines) {
+        if (regex.hasMatch(line)) {
+          words.add(line);
+          // print(line);
+          //  break; // to stop at that word
+        }
+      }
+      print("done");
+    } catch (e) {
+      print("Error reading the file: $e");
+    }
   }
 }

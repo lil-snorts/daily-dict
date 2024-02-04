@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:maxtrackr_flutter/main.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +22,7 @@ class FavouritesPage extends StatelessWidget {
         for (var word in appState.favorites)
           ListTile(
             leading: Icon(Icons.favorite),
-            title: Text(word.asLowerCase),
+            title: Text(word),
           ),
       ],
     );
