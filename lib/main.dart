@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'dart:math';
 
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:maxtrackr_flutter/pages/home_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -35,15 +36,12 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-  var favorites = <WordPair>{};
+  var favorites = <String>{};
+  var words = <String>{};
+  var selectedPageIndex = 0;
+  var currentWord = "Click 'Next'";
 
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
-  }
-
-  void toggleFavorite() {
+  void toggleFavorite(String current) {
     if (favorites.contains(current)) {
       favorites.remove(current);
     } else {
@@ -54,159 +52,49 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isInFavourites() {
+  bool isInFavourites(String current) {
     return favorites.contains(current);
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  var selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    Widget page;
-    switch (selectedIndex) {
-      case 0:
-        page = WordGeneratorPage();
-      case 1:
-        page = FavouritesPage();
-      default:
-        throw UnimplementedError("no widget for $selectedIndex");
+  void getNext() {
+    if (words.isEmpty) {
+      var gen = generate();
+      currentWord = "loading swag...";
+      notifyListeners();
+      gen.whenComplete(() => getNextWordFromSet());
+      return;
+    } else {
+      getNextWordFromSet();
     }
-
-    return Scaffold(
-      body: Row(
-        children: [
-          SafeArea(
-            child: NavigationRail(
-              extended: false,
-              destinations: [
-                NavigationRailDestination(
-                  icon: Icon(Icons.home),
-                  label: Text('Home'),
-                ),
-                NavigationRailDestination(
-                  icon: Icon(Icons.favorite),
-                  label: Text('Favorites'),
-                ),
-              ],
-              selectedIndex: selectedIndex,
-              onDestinationSelected: (value) {
-                setState(() {
-                  selectedIndex = value;
-                });
-              },
-            ),
-          ),
-          Expanded(
-            child: Container(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              child: page,
-            ),
-          ),
-        ],
-      ),
-    );
   }
-}
 
-class WordGeneratorPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-    var pair = appState.current;
-
-    IconData icon =
-        appState.isInFavourites() ? Icons.favorite : Icons.favorite_border;
-
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          BigCard(pair: pair),
-          SizedBox(height: 10),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  appState.toggleFavorite();
-                },
-                icon: Icon(icon),
-                label: Text('Like'),
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNext();
-                },
-                child: Text('Next'),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+  void getNextWordFromSet() {
+    print(words.first);
+    currentWord = words.first;
+    words.remove(currentWord);
+    notifyListeners();
   }
-}
 
-class BigCard extends StatelessWidget {
-  const BigCard({
-    super.key,
-    required this.pair,
-  });
+  Future<void> generate() async {
+    try {
+      if (words.isNotEmpty) return;
 
-  final WordPair pair;
+      File file = File('lib/resources/dictonary.txt');
+      List<String> lines = await file.readAsLines();
+      // Define the regex pattern
+      RegExp regex = RegExp(r'^[A-Z][A-Z0-9\. -]*$');
 
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    final style = theme.textTheme.displayMedium!.copyWith(
-      color: theme.colorScheme.onPrimary,
-    );
-
-    return Card(
-      color: theme.colorScheme.primary,
-      child: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Text(
-          pair.asLowerCase,
-          style: style,
-        ),
-      ),
-    );
-  }
-}
-
-class FavouritesPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
-    if (appState.favorites.isEmpty) {
-      return Center(
-        child: Text("No favourite words as of yet"),
-      );
+      // Iterate through each line and print lines that match the regex
+      for (String line in lines) {
+        if (regex.hasMatch(line)) {
+          words.add(line);
+          // print(line);
+          //  break; // to stop at that word
+        }
+      }
+      print("done");
+    } catch (e) {
+      print("Error reading the file: $e");
     }
-
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text("You have ${appState.favorites.length} favourites"),
-        ),
-        for (var word in appState.favorites)
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text(word.asLowerCase),
-          ),
-      ],
-    );
   }
 }
