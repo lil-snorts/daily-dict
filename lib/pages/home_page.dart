@@ -20,15 +20,15 @@ class MyHomePage extends StatelessWidget {
     }
 
     return Scaffold(
-      body: Row(
+      body: Column(
         children: [
-          NavBar(),
           Expanded(
             child: Container(
               color: Theme.of(context).colorScheme.primaryContainer,
               child: page,
             ),
           ),
+          NavBar(),
         ],
       ),
     );

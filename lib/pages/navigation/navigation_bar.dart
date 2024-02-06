@@ -7,24 +7,21 @@ class NavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
 
-    return SafeArea(
-      child: NavigationRail(
-        extended: false,
-        destinations: [
-          NavigationRailDestination(
-            icon: Icon(Icons.home),
-            label: Text('Home'),
-          ),
-          NavigationRailDestination(
-            icon: Icon(Icons.favorite),
-            label: Text('Favorites'),
-          ),
-        ],
-        selectedIndex: appState.selectedPageIndex,
-        onDestinationSelected: (value) {
-          appState.selectedPageIndex = value;
-        },
-      ),
+    return NavigationBar(
+      onDestinationSelected: (int index) {
+        appState.changePage(index);
+      },
+      destinations: [
+        NavigationDestination(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.favorite),
+          label: 'Favorites',
+        ),
+      ],
+      selectedIndex: appState.selectedPageIndex,
     );
   }
 }
