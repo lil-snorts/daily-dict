@@ -32,9 +32,16 @@ class WordGeneratorPage extends StatelessWidget {
               SizedBox(width: 10),
               ElevatedButton(
                 onPressed: () {
-                  appState.getNext();
+                  appState.getNextWord();
                 },
                 child: Text('Next'),
+              ),
+              SizedBox(width: 10),
+              ElevatedButton(
+                onPressed: () {
+                  appState.getRandomWord();
+                },
+                child: Text('Random'),
               ),
             ],
           ),

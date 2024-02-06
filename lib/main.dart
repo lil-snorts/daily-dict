@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Namer App',
+        title: 'Daily Dic',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
@@ -37,9 +37,15 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var favorites = <String>{};
-  var words = <String>{};
+  var words = <String>[];
   var selectedPageIndex = 0;
+  var currentWordIndex = 0;
   var currentWord = "Click 'Next'";
+
+  void changePage(int index) {
+    selectedPageIndex = index;
+    notifyListeners();
+  }
 
   void toggleFavorite(String current) {
     if (favorites.contains(current)) {
@@ -56,26 +62,35 @@ class MyAppState extends ChangeNotifier {
     return favorites.contains(current);
   }
 
-  void getNext() {
+  Future<void> _generate() {
+    var gen = _loadFromDictionary();
+    currentWordIndex = 0;
+    currentWord = "loading swag...";
+    notifyListeners();
+    return gen;
+  }
+
+  void getNextWord() {
     if (words.isEmpty) {
-      var gen = generate();
-      currentWord = "loading swag...";
-      notifyListeners();
-      gen.whenComplete(() => getNextWordFromSet());
-      return;
+      _generate().whenComplete(() => _updateCurrentWordAndNotify());
     } else {
-      getNextWordFromSet();
+      _updateCurrentWordAndNotify();
     }
   }
 
-  void getNextWordFromSet() {
-    print(words.first);
-    currentWord = words.first;
+  void _updateCurrentWordAndNotify() {
+    currentWord = words[currentWordIndex++];
+    // so we dont repeat words, ever
     words.remove(currentWord);
     notifyListeners();
   }
 
-  Future<void> generate() async {
+  void getRandomWord() {
+    currentWordIndex = Random().nextInt(words.length);
+    getNextWord();
+  }
+
+  Future<void> _loadFromDictionary() async {
     try {
       if (words.isNotEmpty) return;
 
@@ -85,11 +100,19 @@ class MyAppState extends ChangeNotifier {
       RegExp regex = RegExp(r'^[A-Z][A-Z0-9\. -]*$');
 
       // Iterate through each line and print lines that match the regex
+
       for (String line in lines) {
         if (regex.hasMatch(line)) {
-          words.add(line);
-          // print(line);
-          //  break; // to stop at that word
+          if (words.isEmpty ||
+              words.isNotEmpty && words[words.length - 1] != line) {
+            words.add(line);
+            // print("unique $line");
+            // print(line);
+            // to stop at that word
+            //  break;
+          } else {
+            // print("duplicate $line");
+          }
         }
       }
       print("done");
