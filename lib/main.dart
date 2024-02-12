@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:maxtrackr_flutter/pages/home_page.dart';
 import 'package:provider/provider.dart';
 
@@ -93,28 +95,11 @@ class MyAppState extends ChangeNotifier {
   Future<void> _loadFromDictionary() async {
     try {
       if (words.isNotEmpty) return;
+      String bundle =
+          await rootBundle.loadString('assets/parsed_dictionary.json');
+      Map<String, dynamic> dictionary = json.decode(bundle);
 
-      File file = File('lib/resources/dictonary.txt');
-      List<String> lines = await file.readAsLines();
-      // Define the regex pattern
-      RegExp regex = RegExp(r'^[A-Z][A-Z0-9\. -]*$');
-
-      // Iterate through each line and print lines that match the regex
-
-      for (String line in lines) {
-        if (regex.hasMatch(line)) {
-          if (words.isEmpty ||
-              words.isNotEmpty && words[words.length - 1] != line) {
-            words.add(line);
-            // print("unique $line");
-            // print(line);
-            // to stop at that word
-            //  break;
-          } else {
-            // print("duplicate $line");
-          }
-        }
-      }
+      words.add(line);
       print("done");
     } catch (e) {
       print("Error reading the file: $e");
