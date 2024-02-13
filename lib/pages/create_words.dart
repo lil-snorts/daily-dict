@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:maxtrackr_flutter/main.dart';
-import 'package:maxtrackr_flutter/widgets/big_card.dart';
+import 'package:maxtrackr_flutter/domain/widgets/big_card.dart';
 import 'package:provider/provider.dart';
 
 class WordGeneratorPage extends StatelessWidget {
@@ -9,7 +9,7 @@ class WordGeneratorPage extends StatelessWidget {
     var appState = context.watch<MyAppState>();
     var curStr = appState.currentWord;
 
-    IconData icon = appState.isInFavourites(curStr)
+    IconData icon = appState.isInFavourites(curStr.name)
         ? Icons.favorite
         : Icons.favorite_border;
 
@@ -17,7 +17,7 @@ class WordGeneratorPage extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BigCard(pair: curStr),
+          curStr,
           SizedBox(height: 10),
           Row(
             mainAxisSize: MainAxisSize.min,

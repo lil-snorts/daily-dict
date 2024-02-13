@@ -9,6 +9,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
+    appState.getRandomWord();
     Widget page;
     switch (appState.selectedPageIndex) {
       case 0:

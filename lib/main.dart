@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:maxtrackr_flutter/domain/dto/dict_word.dart';
 import 'package:maxtrackr_flutter/pages/home_page.dart';
 import 'package:provider/provider.dart';
 
@@ -39,10 +39,13 @@ class MyApp extends StatelessWidget {
 
 class MyAppState extends ChangeNotifier {
   var favorites = <String>{};
-  var words = <String>[];
+  var words = <DictWord>[];
   var selectedPageIndex = 0;
   var currentWordIndex = 0;
-  var currentWord = "Click 'Next'";
+  var currentWord = DictWord(
+      name: "Click Next",
+      pronounciation: "Cl'-ick Nes-ckts",
+      descriptions: ["This will select a real word from the dictionary"]);
 
   void changePage(int index) {
     selectedPageIndex = index;
@@ -67,7 +70,6 @@ class MyAppState extends ChangeNotifier {
   Future<void> _generate() {
     var gen = _loadFromDictionary();
     currentWordIndex = 0;
-    currentWord = "loading swag...";
     notifyListeners();
     return gen;
   }
@@ -87,7 +89,10 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void getRandomWord() {
+  getRandomWord() async {
+    if (words.isEmpty) {
+      _generate();
+    }
     currentWordIndex = Random().nextInt(words.length);
     getNextWord();
   }
@@ -97,9 +102,11 @@ class MyAppState extends ChangeNotifier {
       if (words.isNotEmpty) return;
       String bundle =
           await rootBundle.loadString('assets/parsed_dictionary.json');
-      Map<String, dynamic> dictionary = json.decode(bundle);
+      List<dynamic> dictionary = json.decode(bundle);
 
-      words.add(line);
+      for (dynamic obj in dictionary) {
+        words.add(DictWord.fromJson(obj));
+      }
       print("done");
     } catch (e) {
       print("Error reading the file: $e");
