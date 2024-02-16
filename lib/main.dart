@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  var favorites = <String>{};
+  var favorites = <DictWord>{};
   var words = <DictWord>[];
   var selectedPageIndex = 0;
   var currentWordIndex = 0;
@@ -52,7 +52,7 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleFavorite(String current) {
+  void toggleFavorite(DictWord current) {
     if (favorites.contains(current)) {
       favorites.remove(current);
     } else {
@@ -63,7 +63,7 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isInFavourites(String current) {
+  bool isInFavourites(DictWord current) {
     return favorites.contains(current);
   }
 
@@ -84,12 +84,13 @@ class MyAppState extends ChangeNotifier {
 
   void _updateCurrentWordAndNotify() {
     currentWord = words[currentWordIndex++];
+    print(currentWordIndex);
     // so we dont repeat words, ever
     words.remove(currentWord);
     notifyListeners();
   }
 
-  getRandomWord() async {
+  getRandomWord() {
     if (words.isEmpty) {
       _generate();
     }

@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-class DictWord extends Widget {
+class DictWord {
   String name;
   String pronounciation;
   List<String> descriptions;
@@ -23,10 +21,4 @@ class DictWord extends Widget {
         'Pronounciation': pronounciation,
         'Descriptions': descriptions,
       };
-
-  @override
-  Element createElement() {
-    // TODO: implement createElement
-    throw UnimplementedError();
-  }
 }
