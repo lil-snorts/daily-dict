@@ -1,7 +1,9 @@
-import 'dart:io';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:maxtrackr_flutter/domain/dto/dict_word.dart';
 import 'package:maxtrackr_flutter/pages/home_page.dart';
 import 'package:provider/provider.dart';
 
@@ -36,18 +38,21 @@ class MyApp extends StatelessWidget {
 }
 
 class MyAppState extends ChangeNotifier {
-  var favorites = <String>{};
-  var words = <String>[];
+  var favorites = <DictWord>{};
+  var words = <DictWord>[];
   var selectedPageIndex = 0;
   var currentWordIndex = 0;
-  var currentWord = "Click 'Next'";
+  var currentWord = DictWord(
+      name: "Click Next",
+      pronounciation: "Cl'-ick Nes-ckts",
+      descriptions: ["This will select a real word from the dictionary"]);
 
   void changePage(int index) {
     selectedPageIndex = index;
     notifyListeners();
   }
 
-  void toggleFavorite(String current) {
+  void toggleFavorite(DictWord current) {
     if (favorites.contains(current)) {
       favorites.remove(current);
     } else {
@@ -58,14 +63,13 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isInFavourites(String current) {
+  bool isInFavourites(DictWord current) {
     return favorites.contains(current);
   }
 
   Future<void> _generate() {
     var gen = _loadFromDictionary();
     currentWordIndex = 0;
-    currentWord = "loading swag...";
     notifyListeners();
     return gen;
   }
@@ -80,12 +84,16 @@ class MyAppState extends ChangeNotifier {
 
   void _updateCurrentWordAndNotify() {
     currentWord = words[currentWordIndex++];
+    print(currentWordIndex);
     // so we dont repeat words, ever
     words.remove(currentWord);
     notifyListeners();
   }
 
-  void getRandomWord() {
+  getRandomWord() {
+    if (words.isEmpty) {
+      _generate();
+    }
     currentWordIndex = Random().nextInt(words.length);
     getNextWord();
   }
@@ -93,27 +101,12 @@ class MyAppState extends ChangeNotifier {
   Future<void> _loadFromDictionary() async {
     try {
       if (words.isNotEmpty) return;
+      String bundle =
+          await rootBundle.loadString('assets/parsed_dictionary.json');
+      List<dynamic> dictionary = json.decode(bundle);
 
-      File file = File('lib/resources/dictonary.txt');
-      List<String> lines = await file.readAsLines();
-      // Define the regex pattern
-      RegExp regex = RegExp(r'^[A-Z][A-Z0-9\. -]*$');
-
-      // Iterate through each line and print lines that match the regex
-
-      for (String line in lines) {
-        if (regex.hasMatch(line)) {
-          if (words.isEmpty ||
-              words.isNotEmpty && words[words.length - 1] != line) {
-            words.add(line);
-            // print("unique $line");
-            // print(line);
-            // to stop at that word
-            //  break;
-          } else {
-            // print("duplicate $line");
-          }
-        }
+      for (dynamic obj in dictionary) {
+        words.add(DictWord.fromJson(obj));
       }
       print("done");
     } catch (e) {

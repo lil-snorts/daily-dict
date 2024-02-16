@@ -19,17 +19,19 @@ class MyHomePage extends StatelessWidget {
         throw UnimplementedError("no widget for $appState.selectedPageIndex");
     }
 
-    return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: Container(
-              color: Theme.of(context).colorScheme.primaryContainer,
-              child: page,
+    return SafeArea(
+      child: Scaffold(
+        body: Column(
+          children: [
+            Expanded(
+              child: Container(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                child: page,
+              ),
             ),
-          ),
-          NavBar(),
-        ],
+            NavBar(),
+          ],
+        ),
       ),
     );
   }

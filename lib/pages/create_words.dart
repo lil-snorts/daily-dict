@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:maxtrackr_flutter/main.dart';
-import 'package:maxtrackr_flutter/widgets/big_card.dart';
 import 'package:provider/provider.dart';
 
 class WordGeneratorPage extends StatelessWidget {
@@ -13,11 +12,37 @@ class WordGeneratorPage extends StatelessWidget {
         ? Icons.favorite
         : Icons.favorite_border;
 
-    return Center(
+    return Container(
+      padding: EdgeInsets.all(10),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BigCard(pair: curStr),
+          SizedBox(height: 30),
+          Card(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  curStr.name,
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Text(curStr.pronounciation),
+                SizedBox(
+                    height: 200,
+                    child: ListView.builder(
+                      itemCount: curStr.descriptions.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title: Text(curStr.descriptions[index]),
+                        );
+                      },
+                    )),
+              ],
+            ),
+          ),
           SizedBox(height: 10),
           Row(
             mainAxisSize: MainAxisSize.min,
