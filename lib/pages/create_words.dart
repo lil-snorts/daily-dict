@@ -6,9 +6,9 @@ class WordGeneratorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var curStr = appState.currentWord;
+    var currentDictWord = appState.currentWord;
 
-    IconData icon = appState.isInFavourites(curStr)
+    IconData icon = appState.isInFavourites(currentDictWord)
         ? Icons.favorite
         : Icons.favorite_border;
 
@@ -17,39 +17,14 @@ class WordGeneratorPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 30),
-          Card(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  curStr.name,
-                  style: TextStyle(
-                    fontSize: 20,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                Text(curStr.pronounciation),
-                SizedBox(
-                    height: 200,
-                    child: ListView.builder(
-                      itemCount: curStr.descriptions.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(curStr.descriptions[index]),
-                        );
-                      },
-                    )),
-              ],
-            ),
-          ),
+          currentDictWord,
           SizedBox(height: 10),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               ElevatedButton.icon(
                 onPressed: () {
-                  appState.toggleFavorite(curStr);
+                  appState.toggleFavorite(currentDictWord);
                 },
                 icon: Icon(icon),
                 label: Text('Like'),

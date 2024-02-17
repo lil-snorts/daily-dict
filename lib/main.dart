@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Daily Dic',
+        title: 'Daily Dict',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
@@ -44,7 +44,7 @@ class MyAppState extends ChangeNotifier {
   var currentWordIndex = 0;
   var currentWord = DictWord(
       name: "Click Next",
-      pronounciation: "Cl'-ick Nes-ckts",
+      pronounciation: "Cl'-ick N'eckts",
       descriptions: ["This will select a real word from the dictionary"]);
 
   void changePage(int index) {

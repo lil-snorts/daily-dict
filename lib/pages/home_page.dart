@@ -24,7 +24,9 @@ class MyHomePage extends StatelessWidget {
         body: Column(
           children: [
             Expanded(
+              flex: 1,
               child: Container(
+                constraints: BoxConstraints(),
                 color: Theme.of(context).colorScheme.primaryContainer,
                 child: page,
               ),
