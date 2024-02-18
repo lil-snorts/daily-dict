@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maxtrackr_flutter/main.dart';
+import 'package:dict_daily/main.dart';
 import 'package:provider/provider.dart';
 
 class WordGeneratorPage extends StatelessWidget {
@@ -13,9 +13,10 @@ class WordGeneratorPage extends StatelessWidget {
         : Icons.favorite_border;
 
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(15),
+      // height: MediaQuery.of(context).size.height * 0.8,
+      color: Theme.of(context).colorScheme.primaryContainer,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           currentDictWord,
           SizedBox(height: 10),

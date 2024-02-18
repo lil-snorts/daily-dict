@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:maxtrackr_flutter/main.dart';
-import 'package:maxtrackr_flutter/pages/create_words.dart';
-import 'package:maxtrackr_flutter/pages/favourites_page.dart';
-import 'package:maxtrackr_flutter/pages/navigation/navigation_bar.dart';
+import 'package:dict_daily/main.dart';
+import 'package:dict_daily/pages/cycle_words.dart';
+import 'package:dict_daily/pages/favourites_page.dart';
+import 'package:dict_daily/pages/navigation/navigation_bar.dart';
 import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -22,15 +22,9 @@ class MyHomePage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              flex: 1,
-              child: Container(
-                constraints: BoxConstraints(),
-                color: Theme.of(context).colorScheme.primaryContainer,
-                child: page,
-              ),
-            ),
+            Expanded(child: page),
             NavBar(),
           ],
         ),

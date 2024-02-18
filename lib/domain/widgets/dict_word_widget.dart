@@ -28,24 +28,22 @@ class DictWord extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Column(
-        // mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            name,
+            "$name\n$pronounciation",
             style: TextStyle(
               fontSize: 20,
             ),
             textAlign: TextAlign.center,
           ),
-          Text(pronounciation),
-          ListView.builder(
-            itemCount: descriptions.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(descriptions[index]),
-              );
-            },
-          ),
+          SizedBox(
+              height: MediaQuery.of(context).size.height * .5,
+              child: ListView.builder(
+                  itemCount: descriptions.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(title: Text(descriptions[index]));
+                  })),
         ],
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maxtrackr_flutter/main.dart';
+import 'package:dict_daily/main.dart';
 import 'package:provider/provider.dart';
 
 class FavouritesPage extends StatelessWidget {
