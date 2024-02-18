@@ -31,14 +31,24 @@ class DictWord extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "$name\n$pronounciation",
+            name,
             style: TextStyle(
               fontSize: 20,
             ),
             textAlign: TextAlign.center,
           ),
+          Text(
+            pronounciation,
+            style: TextStyle(
+              fontSize: 15,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+          ),
           SizedBox(
-              height: MediaQuery.of(context).size.height * .5,
+              height: MediaQuery.of(context).size.height * .7,
               child: ListView.builder(
                   itemCount: descriptions.length,
                   itemBuilder: (context, index) {

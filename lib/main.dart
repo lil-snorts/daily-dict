@@ -74,6 +74,7 @@ class MyAppState extends ChangeNotifier {
 
   void getNextWord() {
     if (words.isEmpty) {
+      print("words empty; generating words");
       _generate().whenComplete(() => _updateCurrentWordAndNotify());
     } else {
       _updateCurrentWordAndNotify();
@@ -107,8 +108,8 @@ class MyAppState extends ChangeNotifier {
         words.add(DictWord.fromJson(obj));
       }
       print("done");
-    } catch (e) {
-      print("Error reading the file: $e");
+    } catch (error) {
+      print("Error reading the file: $error");
     }
   }
 }

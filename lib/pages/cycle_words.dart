@@ -14,12 +14,13 @@ class WordGeneratorPage extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(15),
-      // height: MediaQuery.of(context).size.height * 0.8,
       color: Theme.of(context).colorScheme.primaryContainer,
       child: Column(
         children: [
           currentDictWord,
-          SizedBox(height: 10),
+          Expanded(
+            child: SizedBox(height: 10),
+          ),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -31,19 +32,21 @@ class WordGeneratorPage extends StatelessWidget {
                 label: Text('Like'),
               ),
               SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getNextWord();
-                },
-                child: Text('Next'),
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {
-                  appState.getRandomWord();
-                },
-                child: Text('Random'),
-              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                ElevatedButton(
+                  onPressed: () {
+                    appState.getNextWord();
+                  },
+                  child: Text('Next'),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  onPressed: () {
+                    appState.getRandomWord();
+                  },
+                  child: Text('Random'),
+                )
+              ])
             ],
           ),
         ],
