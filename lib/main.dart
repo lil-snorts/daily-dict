@@ -3,15 +3,13 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:maxtrackr_flutter/domain/dto/dict_word.dart';
-import 'package:maxtrackr_flutter/pages/home_page.dart';
+import 'package:dict_daily/domain/widgets/dict_word_widget.dart';
+import 'package:dict_daily/pages/home_page.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
 }
-
-// https://codelabs.developers.google.com/codelabs/flutter-codelab-first#6
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
-        title: 'Daily Dic',
+        title: 'Daily Dict',
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
@@ -44,7 +42,7 @@ class MyAppState extends ChangeNotifier {
   var currentWordIndex = 0;
   var currentWord = DictWord(
       name: "Click Next",
-      pronounciation: "Cl'-ick Nes-ckts",
+      pronounciation: "Cl'-ick N'eckts",
       descriptions: ["This will select a real word from the dictionary"]);
 
   void changePage(int index) {
@@ -76,6 +74,7 @@ class MyAppState extends ChangeNotifier {
 
   void getNextWord() {
     if (words.isEmpty) {
+      print("words empty; generating words");
       _generate().whenComplete(() => _updateCurrentWordAndNotify());
     } else {
       _updateCurrentWordAndNotify();
@@ -109,8 +108,8 @@ class MyAppState extends ChangeNotifier {
         words.add(DictWord.fromJson(obj));
       }
       print("done");
-    } catch (e) {
-      print("Error reading the file: $e");
+    } catch (error) {
+      print("Error reading the file: $error");
     }
   }
 }

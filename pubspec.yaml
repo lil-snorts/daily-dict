@@ -1,5 +1,5 @@
-name: maxtrackr_flutter
-description: A new Flutter project.
+name: dict_daily
+description: A barebones word showcase app.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
