@@ -12,7 +12,7 @@ class MyHomePage extends StatelessWidget {
     Widget page;
     switch (appState.selectedPageIndex) {
       case 0:
-        page = WordGeneratorPage();
+        page = CycleWordsPage();
       case 1:
         page = FavouritesPage();
       default:
