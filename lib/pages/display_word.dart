@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:dict_daily/main.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class CycleWordsPage extends StatelessWidget {
+class DisplayWord extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();

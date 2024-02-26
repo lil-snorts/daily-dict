@@ -1,3 +1,5 @@
+import 'package:dict_daily/pages/cycle_words.dart';
+import 'package:dict_daily/pages/view_favourited_word.dart';
 import 'package:flutter/material.dart';
 import 'package:dict_daily/main.dart';
 import 'package:provider/provider.dart';
@@ -20,10 +22,18 @@ class FavouritesPage extends StatelessWidget {
           child: Text("You have ${appState.favorites.length} favourites"),
         ),
         for (var word in appState.favorites)
-          ListTile(
-            leading: Icon(Icons.favorite),
-            title: Text(word.name),
-          ),
+          GestureDetector(
+              onTap: () {
+                appState.currentWord = word;
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FavouritedWordPage()));
+              },
+              child: ListTile(
+                leading: Icon(Icons.favorite),
+                title: Text(word.name),
+              )),
       ],
     );
   }
