@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DictWord extends StatelessWidget {
+class DictWord {
   final String name;
   final String pronounciation;
   final List<String> descriptions;
@@ -23,7 +23,11 @@ class DictWord extends StatelessWidget {
         'Pronounciation': pronounciation,
         'Descriptions': descriptions,
       };
+}
 
+class DictWordWidget extends StatelessWidget {
+  final DictWord word;
+  DictWordWidget(this.word);
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -31,14 +35,14 @@ class DictWord extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            name,
+            word.name,
             style: TextStyle(
               fontSize: 20,
             ),
             textAlign: TextAlign.center,
           ),
           Text(
-            pronounciation,
+            word.pronounciation,
             style: TextStyle(
               fontSize: 15,
             ),
@@ -50,9 +54,9 @@ class DictWord extends StatelessWidget {
           SizedBox(
               height: MediaQuery.of(context).size.height * .7,
               child: ListView.builder(
-                  itemCount: descriptions.length,
+                  itemCount: word.descriptions.length,
                   itemBuilder: (context, index) {
-                    return ListTile(title: Text(descriptions[index]));
+                    return ListTile(title: Text(word.descriptions[index]));
                   })),
         ],
       ),

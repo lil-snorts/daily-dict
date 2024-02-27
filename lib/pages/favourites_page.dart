@@ -1,4 +1,3 @@
-import 'package:dict_daily/pages/cycle_words.dart';
 import 'package:dict_daily/pages/view_favourited_word.dart';
 import 'package:flutter/material.dart';
 import 'package:dict_daily/main.dart';

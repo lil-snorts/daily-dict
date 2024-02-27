@@ -91,10 +91,14 @@ class MyAppState extends ChangeNotifier {
 
   getRandomWord() {
     if (words.isEmpty) {
-      _generate();
+      _generate().then((value) {
+        currentWordIndex = Random().nextInt(words.length);
+        getNextWord();
+      });
+    } else {
+      currentWordIndex = Random().nextInt(words.length);
+      getNextWord();
     }
-    currentWordIndex = Random().nextInt(words.length);
-    getNextWord();
   }
 
   Future<void> _loadFromDictionary() async {

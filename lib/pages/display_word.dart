@@ -1,3 +1,4 @@
+import 'package:dict_daily/domain/widgets/dict_word_widget.dart';
 import 'package:dict_daily/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -6,9 +7,8 @@ class DisplayWord extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var currentDictWord = appState.currentWord;
 
-    IconData icon = appState.isInFavourites(currentDictWord)
+    IconData icon = appState.isInFavourites(appState.currentWord)
         ? Icons.favorite
         : Icons.favorite_border;
 
@@ -17,7 +17,7 @@ class DisplayWord extends StatelessWidget {
       color: Theme.of(context).colorScheme.primaryContainer,
       child: Column(
         children: [
-          currentDictWord,
+          DictWordWidget(appState.currentWord),
           Expanded(
             child: SizedBox(height: 10),
           ),
@@ -26,7 +26,7 @@ class DisplayWord extends StatelessWidget {
             children: [
               ElevatedButton.icon(
                 onPressed: () {
-                  appState.toggleFavorite(currentDictWord);
+                  appState.toggleFavorite(appState.currentWord);
                 },
                 icon: Icon(icon),
                 label: Text('Like'),

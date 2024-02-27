@@ -1,3 +1,4 @@
+import 'package:dict_daily/domain/widgets/dict_word_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:dict_daily/main.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,7 @@ class CycleWordsPage extends StatelessWidget {
       color: Theme.of(context).colorScheme.primaryContainer,
       child: Column(
         children: [
-          currentDictWord,
+          DictWordWidget(currentDictWord),
           Expanded(
             child: SizedBox(height: 10),
           ),
