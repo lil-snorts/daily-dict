@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    var appState = context.watch<AppState>();
 
     Widget page;
     switch (appState.selectedPageIndex) {

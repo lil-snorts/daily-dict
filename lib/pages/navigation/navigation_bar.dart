@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 class NavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    var appState = context.watch<AppState>();
 
     return NavigationBar(
       onDestinationSelected: (int index) {

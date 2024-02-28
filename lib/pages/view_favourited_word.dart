@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 class FavouritedWordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    var appState = context.watch<AppState>();
 
     IconData icon = appState.isInFavourites(appState.currentWord)
         ? Icons.favorite

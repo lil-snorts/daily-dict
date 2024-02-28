@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 
 class DictWord {
+  final int id;
   final String name;
   final String pronounciation;
   final List<String> descriptions;
 
   DictWord(
-      {required this.name,
+      {required this.id,
+      required this.name,
       required this.pronounciation,
       required this.descriptions});
 
-  factory DictWord.fromJson(Map<String, dynamic> json) {
+  factory DictWord.fromJson(int id, Map<String, dynamic> json) {
     return DictWord(
+      id: id,
       name: json['Name'],
       pronounciation: json['Pronounciation'],
       descriptions: List<String>.from(json['Descriptions']),
@@ -23,6 +26,18 @@ class DictWord {
         'Pronounciation': pronounciation,
         'Descriptions': descriptions,
       };
+  Map<String, Object?> toMap() {
+    String descriptionsConcat = "";
+    for (var s in descriptions) {
+      descriptionsConcat += "$s⍩";
+    }
+    return {
+      'id': id,
+      'name': name,
+      'pronounciation': pronounciation,
+      'descriptions': descriptionsConcat
+    };
+  }
 }
 
 class DictWordWidget extends StatelessWidget {
