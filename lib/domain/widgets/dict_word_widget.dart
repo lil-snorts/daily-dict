@@ -12,16 +12,26 @@ class DictWord {
       required this.pronounciation,
       required this.descriptions});
 
-  factory DictWord.fromJson(int id, Map<String, dynamic> json) {
-    return DictWord(
-      id: id,
-      name: json['Name'],
-      pronounciation: json['Pronounciation'],
-      descriptions: List<String>.from(json['Descriptions']),
-    );
+  factory DictWord.fromJson(int? id, Map<String, dynamic> json) {
+    if (id != null) {
+      return DictWord(
+        id: id,
+        name: json['Name'],
+        pronounciation: json['Pronounciation'],
+        descriptions: List<String>.from(json['Descriptions']),
+      );
+    } else {
+      return DictWord(
+        id: json['Id'],
+        name: json['Name'],
+        pronounciation: json['Pronounciation'],
+        descriptions: List<String>.from(json['Descriptions']),
+      );
+    }
   }
 
   Map<String, dynamic> toJson() => {
+        'Id': id,
         'Name': name,
         'Pronounciation': pronounciation,
         'Descriptions': descriptions,
